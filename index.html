@@ -212,6 +212,67 @@
                 </tbody>
               </table>
             </div>
+
+            <!-- Validation steps checklist -->
+            <div id="validation-steps" class="validation-steps" aria-label="Validation steps" role="list"></div>
+
+            <!-- Bank information card -->
+            <div id="bank-info-section" class="bank-info-section hidden" aria-label="Bank information">
+              <h3 class="bank-info-title">
+                <span aria-hidden="true">🏦</span>
+                Bank Information
+              </h3>
+              <div class="bank-info-bic-row">
+                <div class="bank-info-bic-block">
+                  <span class="bank-info-label">BIC / SWIFT</span>
+                  <span id="res-bic" class="bank-info-bic-value"></span>
+                  <span id="res-bic-city" class="bank-info-bic-city"></span>
+                </div>
+                <button
+                  id="copy-bic-btn"
+                  class="btn btn-secondary btn-sm"
+                  type="button"
+                  aria-label="Copy BIC to clipboard"
+                >
+                  <span class="btn-icon" aria-hidden="true">📋</span>
+                  Copy BIC
+                </button>
+              </div>
+              <div id="res-bank-name" class="bank-info-name"></div>
+              <div id="res-bank-address" class="bank-info-address"></div>
+              <!-- SEPA support -->
+              <div class="sepa-section" aria-label="SEPA support">
+                <div class="sepa-title">SEPA Support</div>
+                <ul class="sepa-list" role="list">
+                  <li class="sepa-item">
+                    <span id="sepa-sct-icon" class="sepa-icon" aria-hidden="true"></span>
+                    <span class="sepa-label">SEPA Credit Transfer</span>
+                    <span id="sepa-sct-text" class="sepa-status"></span>
+                  </li>
+                  <li class="sepa-item">
+                    <span id="sepa-sdd-icon" class="sepa-icon" aria-hidden="true"></span>
+                    <span class="sepa-label">SEPA Direct Debit</span>
+                    <span id="sepa-sdd-text" class="sepa-status"></span>
+                  </li>
+                  <li class="sepa-item">
+                    <span id="sepa-b2b-icon" class="sepa-icon" aria-hidden="true"></span>
+                    <span class="sepa-label">SEPA B2B Direct Debit</span>
+                    <span id="sepa-b2b-text" class="sepa-status"></span>
+                  </li>
+                  <li class="sepa-item">
+                    <span id="sepa-inst-icon" class="sepa-icon" aria-hidden="true"></span>
+                    <span class="sepa-label">SEPA Instant Credit Transfer</span>
+                    <span id="sepa-inst-text" class="sepa-status"></span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Bank not found notice -->
+            <div id="bank-not-found" class="bank-not-found hidden" aria-live="polite">
+              <span aria-hidden="true">ℹ️</span>
+              Bank details not available for this bank code.
+            </div>
           </section>
         </section>
 
@@ -286,6 +347,7 @@
     <!-- ════════════════════════════════════════
          SCRIPTS (load order matters)
     ════════════════════════════════════════ -->
+    <script src="js/bank-data.js"></script>
     <script src="js/iban-data.js"></script>
     <script src="js/validator.js"></script>
     <script src="js/app.js"></script>

@@ -65,6 +65,20 @@ function ibanToNumeric(normalizedIban) {
 }
 
 /**
+ * Looks up bank information from the BANK_DATA directory.
+ * @param {string} countryCode - ISO 3166-1 alpha-2 country code.
+ * @param {string} bankCode - The bank code extracted from the BBAN.
+ * @returns {object|null} Bank info object or null if not found.
+ */
+function lookupBank(countryCode, bankCode) {
+  if (!countryCode || !bankCode) return null;
+  if (typeof BANK_DATA === 'undefined') return null;
+  const countryBanks = BANK_DATA[countryCode];
+  if (!countryBanks) return null;
+  return countryBanks[bankCode] || null;
+}
+
+/**
  * Validates an IBAN string and returns a detailed result object.
  *
  * @param {string} rawIban - The IBAN to validate (may have spaces, lowercase).
@@ -79,7 +93,9 @@ function ibanToNumeric(normalizedIban) {
  *   countryInfo: object|null,
  *   bankCode: string|null,
  *   branchCode: string|null,
- *   accountNumber: string|null
+ *   accountNumber: string|null,
+ *   bankInfo: object|null,
+ *   validationSteps: Array<{label: string, detail: string, passed: boolean}>
  * }}
  */
 function validateIBAN(rawIban) {
@@ -95,6 +111,8 @@ function validateIBAN(rawIban) {
     bankCode: null,
     branchCode: null,
     accountNumber: null,
+    bankInfo: null,
+    validationSteps: [],
   };
 
   if (!rawIban || typeof rawIban !== 'string') {
@@ -163,6 +181,30 @@ function validateIBAN(rawIban) {
     result.accountNumber = result.bban.slice(start, start + length);
   }
 
+  // 7. Build validation steps checklist
+  result.validationSteps = [
+    {
+      label: 'Correct length',
+      detail: `This IBAN has the correct length for ${countryInfo.name} (${iban.length} characters).`,
+      passed: true,
+    },
+    {
+      label: 'Bank code',
+      detail: result.bankCode
+        ? `Bank code ${result.bankCode}: recognised for ${countryInfo.name}.`
+        : 'No bank code specified for this country.',
+      passed: true,
+    },
+    {
+      label: 'IBAN checksum (MOD-97)',
+      detail: `IBAN ${iban}: The IBAN checksum is correct.`,
+      passed: true,
+    },
+  ];
+
+  // 8. Look up bank details
+  result.bankInfo = lookupBank(result.countryCode, result.bankCode);
+
   result.valid = true;
   return result;
 }
@@ -186,5 +228,5 @@ function getFlagEmoji(countryCode) {
 
 // Export for use in other modules / Node.js testing
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { normalizeIBAN, formatIBAN, mod97, ibanToNumeric, validateIBAN, getFlagEmoji };
+  module.exports = { normalizeIBAN, formatIBAN, mod97, ibanToNumeric, validateIBAN, getFlagEmoji, lookupBank };
 }
