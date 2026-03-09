@@ -101,7 +101,7 @@ const BANK_DATA = {
     'SRLG': { bic: 'SRLGGB2LXXX', name: 'Starling Bank', city: 'London', zip: 'EC2A 3AX', sepa: { sct: true,  sdd: true,  b2b: false, inst: true  } },
     'CPBK': { bic: 'CPBKGB22XXX', name: 'Co-operative Bank plc', city: 'Manchester', zip: 'M60 4EP', sepa: { sct: true,  sdd: true,  b2b: false, inst: false } },
     'SAND': { bic: 'SANDGB22XXX', name: 'Santander UK plc', city: 'Milton Keynes', zip: 'MK9 2HT', sepa: { sct: true,  sdd: true,  b2b: false, inst: true  } },
-    'HALIFX': { bic: 'HLFXGB21XXX', name: 'Halifax plc (Bank of Scotland)', city: 'Halifax', zip: 'HX1 2RG', sepa: { sct: true,  sdd: true,  b2b: false, inst: true  } },
+    'HLFX': { bic: 'HLFXGB21XXX', name: 'Halifax plc (Bank of Scotland)', city: 'Halifax', zip: 'HX1 2RG', sepa: { sct: true,  sdd: true,  b2b: false, inst: true  } },
   },
 
   /* ──────────────────────────────────────────────────────────────────────────
@@ -188,14 +188,15 @@ const BANK_DATA = {
   ─────────────────────────────────────────────────────────────────────────── */
   CH: {
     '00230': { bic: 'UBSWCHZH80A', name: 'UBS Switzerland AG', city: 'Zürich', zip: '8001', sepa: { sct: true,  sdd: false, b2b: false, inst: false } },
+    '00234': { bic: 'UBSWCHZH80A', name: 'UBS Switzerland AG (Lugano)', city: 'Lugano', zip: '6900', sepa: { sct: true,  sdd: false, b2b: false, inst: false } },
     '00480': { bic: 'CRESCHZZ80A', name: 'Credit Suisse (Switzerland) Ltd', city: 'Zürich', zip: '8070', sepa: { sct: true,  sdd: false, b2b: false, inst: false } },
+    '00762': { bic: 'ZKBKCHZZ80A', name: 'Zürcher Kantonalbank', city: 'Zürich', zip: '8010', sepa: { sct: true,  sdd: false, b2b: false, inst: false } },
     '00765': { bic: 'ZKBKCHZZ80A', name: 'Zürcher Kantonalbank', city: 'Zürich', zip: '8010', sepa: { sct: true,  sdd: false, b2b: false, inst: false } },
     '07763': { bic: 'RAIFCH22XXX', name: 'Raiffeisen Schweiz', city: 'St. Gallen', zip: '9001', sepa: { sct: true,  sdd: false, b2b: false, inst: false } },
     '09000': { bic: 'POFICHBEXXX', name: 'PostFinance AG', city: 'Bern', zip: '3030', sepa: { sct: true,  sdd: false, b2b: false, inst: false } },
     '00892': { bic: 'VALOCHZZXXX', name: 'Banque Cantonale Vaudoise', city: 'Lausanne', zip: '1001', sepa: { sct: true,  sdd: false, b2b: false, inst: false } },
     '00686': { bic: 'BCGECHGGXXX', name: 'Banque Cantonale de Genève', city: 'Genève', zip: '1211', sepa: { sct: true,  sdd: false, b2b: false, inst: false } },
     '00774': { bic: 'SAUKCHZZ80A', name: 'Bank Julius Bär & Co. AG', city: 'Zürich', zip: '8010', sepa: { sct: true,  sdd: false, b2b: false, inst: false } },
-    '00234': { bic: 'UBSWCHZH80A', name: 'UBS Switzerland AG (Lugano)', city: 'Lugano', zip: '6900', sepa: { sct: true,  sdd: false, b2b: false, inst: false } },
     '00271': { bic: 'KBSGCH22XXX', name: 'St. Gallische Kantonalbank', city: 'St. Gallen', zip: '9001', sepa: { sct: true,  sdd: false, b2b: false, inst: false } },
   },
 
@@ -220,7 +221,7 @@ const BANK_DATA = {
   ─────────────────────────────────────────────────────────────────────────── */
   BE: {
     '539': { bic: 'GEBABEBB',    name: 'BNP Paribas Fortis', city: 'Bruxelles', zip: '1000', sepa: { sct: true,  sdd: true,  b2b: true,  inst: true  } },
-    '363': { bic: 'NICA BE 2A',  name: 'ING België NV/SA', city: 'Bruxelles', zip: '1000', sepa: { sct: true,  sdd: true,  b2b: true,  inst: true  } },
+    '363': { bic: 'NICABEBB',    name: 'ING België NV/SA', city: 'Bruxelles', zip: '1000', sepa: { sct: true,  sdd: true,  b2b: true,  inst: true  } },
     '734': { bic: 'KREDBEBB',    name: 'KBC Bank NV', city: 'Bruxelles', zip: '1080', sepa: { sct: true,  sdd: true,  b2b: true,  inst: true  } },
     '068': { bic: 'BBRUBEBB',    name: 'Belfius Bank NV/SA', city: 'Bruxelles', zip: '1210', sepa: { sct: true,  sdd: true,  b2b: true,  inst: true  } },
     '645': { bic: 'TRIOBEBB',    name: 'Triodos Bank NV', city: 'Bruxelles', zip: '1000', sepa: { sct: true,  sdd: true,  b2b: false, inst: false } },
@@ -232,19 +233,19 @@ const BANK_DATA = {
   },
 
   /* ──────────────────────────────────────────────────────────────────────────
-     POLAND (PL)  —  8-digit bank code (NBP routing number / NRB)
+     POLAND (PL)  —  3-digit bank code (first 3 digits of NBP clearing number)
   ─────────────────────────────────────────────────────────────────────────── */
   PL: {
-    '10200004': { bic: 'BPKOPLPWXXX', name: 'PKO Bank Polski S.A.', city: 'Warszawa', zip: '00-950', sepa: { sct: true,  sdd: true,  b2b: true,  inst: true  } },
-    '11401027': { bic: 'MRELPLPWXXX', name: 'mBank S.A.', city: 'Warszawa', zip: '00-850', sepa: { sct: true,  sdd: true,  b2b: true,  inst: true  } },
-    '10501025': { bic: 'INGBPLPWXXX', name: 'ING Bank Śląski S.A.', city: 'Katowice', zip: '40-086', sepa: { sct: true,  sdd: true,  b2b: true,  inst: true  } },
-    '10901014': { bic: 'WBKPPLPPXXX', name: 'Santander Bank Polska S.A.', city: 'Wrocław', zip: '50-950', sepa: { sct: true,  sdd: true,  b2b: true,  inst: true  } },
-    '15401099': { bic: 'CITIPLPXXXX', name: 'Bank Handlowy w Warszawie S.A. (Citibank)', city: 'Warszawa', zip: '00-923', sepa: { sct: true,  sdd: true,  b2b: false, inst: false } },
-    '10301089': { bic: 'PKOPPLPWXXX', name: 'Bank Pekao S.A.', city: 'Warszawa', zip: '00-844', sepa: { sct: true,  sdd: true,  b2b: true,  inst: true  } },
-    '19401052': { bic: 'GBGCPLPKXXX', name: 'Getin Bank S.A.', city: 'Wrocław', zip: '50-950', sepa: { sct: true,  sdd: true,  b2b: false, inst: false } },
-    '10201026': { bic: 'BPKOPLPWXXX', name: 'PKO Bank Polski S.A. (oddział)', city: 'Warszawa', zip: '00-950', sepa: { sct: true,  sdd: true,  b2b: true,  inst: true  } },
-    '11602202': { bic: 'PPABPLPKXXX', name: 'BNP Paribas Bank Polska S.A.', city: 'Warszawa', zip: '00-380', sepa: { sct: true,  sdd: true,  b2b: true,  inst: true  } },
-    '10241018': { bic: 'DEUTPLPKXXX', name: 'Deutsche Bank Polska S.A.', city: 'Warszawa', zip: '00-124', sepa: { sct: true,  sdd: true,  b2b: false, inst: false } },
+    '102': { bic: 'BPKOPLPWXXX', name: 'PKO Bank Polski S.A.', city: 'Warszawa', zip: '00-950', sepa: { sct: true,  sdd: true,  b2b: true,  inst: true  } },
+    '114': { bic: 'MRELPLPWXXX', name: 'mBank S.A.', city: 'Warszawa', zip: '00-850', sepa: { sct: true,  sdd: true,  b2b: true,  inst: true  } },
+    '105': { bic: 'INGBPLPWXXX', name: 'ING Bank Śląski S.A.', city: 'Katowice', zip: '40-086', sepa: { sct: true,  sdd: true,  b2b: true,  inst: true  } },
+    '109': { bic: 'WBKPPLPPXXX', name: 'Santander Bank Polska S.A.', city: 'Wrocław', zip: '50-950', sepa: { sct: true,  sdd: true,  b2b: true,  inst: true  } },
+    '154': { bic: 'CITIPLPXXXX', name: 'Bank Handlowy w Warszawie S.A. (Citibank)', city: 'Warszawa', zip: '00-923', sepa: { sct: true,  sdd: true,  b2b: false, inst: false } },
+    '103': { bic: 'PKOPPLPWXXX', name: 'Bank Pekao S.A.', city: 'Warszawa', zip: '00-844', sepa: { sct: true,  sdd: true,  b2b: true,  inst: true  } },
+    '116': { bic: 'PPABPLPKXXX', name: 'BNP Paribas Bank Polska S.A.', city: 'Warszawa', zip: '00-380', sepa: { sct: true,  sdd: true,  b2b: true,  inst: true  } },
+    '124': { bic: 'DEUTPLPKXXX', name: 'Deutsche Bank Polska S.A.', city: 'Warszawa', zip: '00-124', sepa: { sct: true,  sdd: true,  b2b: false, inst: false } },
+    '175': { bic: 'RCBWPLPWXXX', name: 'Raiffeisen Bank Polska S.A.', city: 'Warszawa', zip: '00-120', sepa: { sct: true,  sdd: true,  b2b: false, inst: true  } },
+    '194': { bic: 'GBGCPLPKXXX', name: 'Getin Bank S.A.', city: 'Wrocław', zip: '50-950', sepa: { sct: true,  sdd: true,  b2b: false, inst: false } },
   },
 
   /* ──────────────────────────────────────────────────────────────────────────
