@@ -18,6 +18,7 @@
   const errorSection = document.getElementById('error-section');
   const errorMessage = document.getElementById('error-message');
   const copyBtn = document.getElementById('copy-btn');
+  const copyBicBtn = document.getElementById('copy-bic-btn');
   const printBtn = document.getElementById('print-btn');
   const charCounter = document.getElementById('char-counter');
   const inputWrapper = document.getElementById('input-wrapper');
@@ -37,6 +38,15 @@
   const bankCodeRow = document.getElementById('bank-code-row');
   const branchCodeRow = document.getElementById('branch-code-row');
   const accountNumberRow = document.getElementById('account-number-row');
+
+  /* New sections */
+  const validationStepsEl = document.getElementById('validation-steps');
+  const bankInfoSection = document.getElementById('bank-info-section');
+  const bankNotFound = document.getElementById('bank-not-found');
+  const resBic = document.getElementById('res-bic');
+  const resBicCity = document.getElementById('res-bic-city');
+  const resBankName = document.getElementById('res-bank-name');
+  const resBankAddress = document.getElementById('res-bank-address');
 
   /* ─────────────────────────────────────────────
      Helpers
@@ -100,7 +110,7 @@
   function showResult(result) {
     hideResults();
 
-    const { countryInfo, countryCode, formatted, checkDigits, bban, bankCode, branchCode, accountNumber, iban } = result;
+    const { countryInfo, countryCode, formatted, checkDigits, bban, bankCode, branchCode, accountNumber, iban, validationSteps, bankInfo } = result;
     const flag = getFlagEmoji(countryCode);
 
     resFormatted.textContent = formatted;
@@ -134,12 +144,76 @@
       accountNumberRow.classList.add('hidden');
     }
 
+    // Render validation steps checklist
+    validationStepsEl.innerHTML = '';
+    if (validationSteps && validationSteps.length) {
+      validationSteps.forEach((step) => {
+        const item = document.createElement('div');
+        item.className = 'validation-step' + (step.passed ? ' step-passed' : ' step-failed');
+        item.setAttribute('role', 'listitem');
+        item.innerHTML =
+          '<span class="step-icon" aria-hidden="true">' + (step.passed ? '✅' : '❌') + '</span>' +
+          '<span class="step-detail">' + escapeHtml(step.detail) + '</span>';
+        validationStepsEl.appendChild(item);
+      });
+    }
+
+    // Render bank info
+    if (bankInfo) {
+      resBic.textContent = bankInfo.bic;
+      resBicCity.textContent = bankInfo.city ? '(' + bankInfo.city + ')' : '';
+      resBankName.textContent = bankInfo.name;
+      resBankAddress.textContent = [bankInfo.zip, bankInfo.city].filter(Boolean).join(' ');
+
+      // SEPA indicators
+      renderSepaIndicator('sepa-sct', bankInfo.sepa.sct);
+      renderSepaIndicator('sepa-sdd', bankInfo.sepa.sdd);
+      renderSepaIndicator('sepa-b2b', bankInfo.sepa.b2b);
+      renderSepaIndicator('sepa-inst', bankInfo.sepa.inst);
+
+      bankInfoSection.classList.remove('hidden');
+      bankNotFound.classList.add('hidden');
+    } else {
+      bankInfoSection.classList.add('hidden');
+      // Only show "not found" notice when there is a bank code to look up
+      if (bankCode) {
+        bankNotFound.classList.remove('hidden');
+      } else {
+        bankNotFound.classList.add('hidden');
+      }
+    }
+
     resultSection.classList.remove('hidden');
     inputWrapper.classList.add('input-valid');
     inputWrapper.classList.remove('input-invalid');
 
     // Scroll to result
     resultSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  /** Sets the icon and text for a single SEPA indicator */
+  function renderSepaIndicator(id, supported) {
+    const iconEl = document.getElementById(id + '-icon');
+    const textEl = document.getElementById(id + '-text');
+    if (!iconEl || !textEl) return;
+    if (supported) {
+      iconEl.textContent = '✅';
+      textEl.textContent = 'Supported';
+      textEl.className = 'sepa-status sepa-supported';
+    } else {
+      iconEl.textContent = '❌';
+      textEl.textContent = 'Not supported';
+      textEl.className = 'sepa-status sepa-not-supported';
+    }
+  }
+
+  /** Escapes HTML special characters to prevent XSS when inserting text */
+  function escapeHtml(str) {
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
   }
 
   /* ─────────────────────────────────────────────
@@ -221,6 +295,41 @@
       });
   }
 
+  /** Copies the BIC to the clipboard */
+  function copyBicToClipboard() {
+    const text = resBic.textContent;
+    if (!text) return;
+
+    const doConfirm = () => {
+      const original = copyBicBtn.innerHTML;
+      copyBicBtn.innerHTML = '<span class="btn-icon">✅</span> Copied!';
+      copyBicBtn.disabled = true;
+      setTimeout(() => {
+        copyBicBtn.innerHTML = original;
+        copyBicBtn.disabled = false;
+      }, 2000);
+    };
+
+    navigator.clipboard
+      .writeText(text)
+      .then(doConfirm)
+      .catch(() => {
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        textarea.style.position = 'fixed';
+        textarea.style.opacity = '0';
+        document.body.appendChild(textarea);
+        textarea.select();
+        try {
+          document.execCommand('copy');
+          doConfirm();
+        } catch (_) {
+          alert('Could not copy to clipboard. Please copy manually: ' + text);
+        }
+        document.body.removeChild(textarea);
+      });
+  }
+
   /* ─────────────────────────────────────────────
      Event listeners
   ───────────────────────────────────────────── */
@@ -238,6 +347,7 @@
   clearBtn.addEventListener('click', clearForm);
   exampleBtn.addEventListener('click', loadExample);
   copyBtn.addEventListener('click', copyToClipboard);
+  if (copyBicBtn) copyBicBtn.addEventListener('click', copyBicToClipboard);
   printBtn.addEventListener('click', () => window.print());
 
   /* ─────────────────────────────────────────────
